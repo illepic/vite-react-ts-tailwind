@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 
-import "./App.css";
-
 type Tab = "appointments" | "crews";
 
+const branches = ["branch 1", "branch 2", "branch 3"];
+
 function App() {
-  const [count, setCount] = useState(0);
   const [activeTab, setActiveTab] = useState<Tab>("appointments");
 
   return (
@@ -14,17 +13,21 @@ function App() {
       <button onClick={() => setActiveTab("appointments")}>Appointments</button>
       <button onClick={() => setActiveTab("crews")}>Crews</button>
 
+      <select>
+        {branches.map((branch) => (
+          <option value={branch}>{branch}</option>
+        ))}
+      </select>
+
       <div
-        className={`appointments hidden ${clsx({
-          visible: activeTab === "appointments",
-        })}`}
+        className={`appointments ${
+          activeTab === "appointments" ? "block" : "hidden"
+        }`}
       >
         <p>Appointments visible</p>
       </div>
       <div
-        className={`appointment hidden ${clsx({
-          visible: activeTab === "crews",
-        })}`}
+        className={`appointment ${activeTab === "crews" ? "block" : "hidden"}`}
       >
         <p>Crews Visible</p>
       </div>
