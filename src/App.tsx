@@ -87,20 +87,24 @@ function App() {
         </button>
       </div>
 
+      <div>
+        <p>Active branch: {activeBranch}</p>
+        <p>Active phase: {activePhase}</p>
+      </div>
       <div className="app-bottom">
         <div
           className={`appointments ${
             activeTab === "appointments" ? "block" : "hidden"
           }`}
         >
-          <p>Appointments visible</p>
+          <p className="text-center">Appointments visible</p>
         </div>
         <div
           className={`appointment ${
             activeTab === "crews" ? "block" : "hidden"
           }`}
         >
-          <p>Crews Visible</p>
+          <p className="text-center">Crews Visible</p>
         </div>
       </div>
     </div>
