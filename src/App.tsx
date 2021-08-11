@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
+
+import { fetchBreeds, fetchCategories } from "./api";
 
 type Tab = "appointments" | "crews";
 
@@ -7,6 +9,20 @@ const branches = ["branch 1", "branch 2", "branch 3"];
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>("appointments");
+  const [branches, setBranches] = useState<string[]>([]);
+  const [phases, setPhases] = useState<string[]>([]);
+
+  const [activeBranch, setActiveBranch] = useState("");
+  const [activePhase, setActivePhase] = useState("");
+
+  useEffect(() => {
+    fetchBreeds().then((breeds) =>
+      setBranches(breeds.map((breed) => breed.name))
+    );
+    fetchCategories().then((categories) =>
+      setPhases(categories.map((category) => category.name))
+    );
+  }, []);
 
   return (
     <div className="app container mx-auto">
@@ -32,8 +48,12 @@ function App() {
         </button>
 
         <div className="mx-2">
-          <label htmlFor="select-branch">Select branch:</label>
-          <select id="select-branch" className="block">
+          <label htmlFor="select-branch">Branch location:</label>
+          <select
+            id="select-branch"
+            className="block"
+            onChange={(e) => setActiveBranch(e.target.value)}
+          >
             {branches.map((branch) => (
               <option value={branch} key={branch}>
                 {branch}
@@ -42,15 +62,29 @@ function App() {
           </select>
         </div>
 
-        {activeTab === "crews" && (
+        {activeTab === "appointments" && (
           <div className="mx-2">
-            <label htmlFor="select-crew">Select crew:</label>
-            <select id="select-crew" className="block">
-              <option value="crew 1">crew 1</option>
-              <option value="crew 2">crew 2</option>
+            <label htmlFor="select-crew">Job phase:</label>
+            <select
+              id="select-crew"
+              className="block"
+              onChange={(e) => setActivePhase(e.target.value)}
+            >
+              {phases.map((phase) => (
+                <option value={phase} key={phase}>
+                  {phase}
+                </option>
+              ))}
             </select>
           </div>
         )}
+
+        <button
+          className="font-bold text-white bg-blue-400 rounded-md p-2 mx-2"
+          onClick={() => console.log("call api")}
+        >
+          Load
+        </button>
       </div>
 
       <div className="app-bottom">
