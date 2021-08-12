@@ -24,3 +24,62 @@ export const fetchCategories = async (): Promise<Category[]> => {
   const response = await fetch(CATEGORIES_URL, CAT_API_HEADERS);
   return await response.json();
 };
+
+/**
+ * Example transformation of Phase results
+ */
+const phaseKey = 18;
+
+type apiPhase = {
+  [phaseKey]: {
+    value: string;
+  };
+};
+
+const response: apiPhase[] = [
+  {
+    18: {
+      value: "Phase 1",
+    },
+  },
+  {
+    18: {
+      value: "Phase 2",
+    },
+  },
+  {
+    18: {
+      value: "Phase 3",
+    },
+  },
+  {
+    18: {
+      value: "Phase 1",
+    },
+  },
+  {
+    18: {
+      value: "Phase 2",
+    },
+  },
+  {
+    18: {
+      value: "Phase 3",
+    },
+  },
+  {
+    18: {
+      value: "Phase 4",
+    },
+  },
+];
+
+// 1. Map over the response items and extract the `value` value
+// 2. Pass the array created from 1. to a Set() which removes dupes
+// 3. Spread this de-duped result into an array
+// 4. Sort it
+const results = [
+  ...new Set(response.map((item) => item[phaseKey].value)),
+].sort();
+
+console.log(results);

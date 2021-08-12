@@ -5,7 +5,61 @@ import { fetchBreeds, fetchCategories } from "./api";
 
 type Tab = "appointments" | "crews";
 
-const branches = ["branch 1", "branch 2", "branch 3"];
+const phaseKey = 18;
+
+type apiPhase = {
+  [phaseKey]: {
+    value: string;
+  };
+};
+
+const response: apiPhase[] = [
+  {
+    18: {
+      value: "Phase 1",
+    },
+  },
+  {
+    18: {
+      value: "Phase 2",
+    },
+  },
+  {
+    18: {
+      value: "Phase 3",
+    },
+  },
+  {
+    18: {
+      value: "Phase 1",
+    },
+  },
+  {
+    18: {
+      value: "Phase 2",
+    },
+  },
+  {
+    18: {
+      value: "Phase 3",
+    },
+  },
+  {
+    18: {
+      value: "Phase 4",
+    },
+  },
+];
+
+// 1. Map over the response items and extract the `value` value
+// 2. Pass the array created from 1. to a Set() which removes dupes
+// 3. Spread this de-duped result into an array
+// 4. Sort it
+const results = [
+  ...new Set(response.map((item) => item[phaseKey].value)),
+].sort();
+
+console.log(results);
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>("appointments");
@@ -92,6 +146,7 @@ function App() {
         <p>Active phase: {activePhase}</p>
       </div>
       <div className="app-bottom">
+        <div>Left</div>
         <div
           className={`appointments ${
             activeTab === "appointments" ? "block" : "hidden"
