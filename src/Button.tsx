@@ -10,17 +10,15 @@ const Button: React.FC<PropsWithChildren<Props>> = ({
   active,
   clickHandler,
   children,
-}) => {
-  return (
-    <button
-      className={clsx("font-bold text-white bg-blue-400 rounded-md p-2 mx-2", {
-        "bg-blue-900": active,
-      })}
-      onClick={clickHandler}
-    >
-      {children}
-    </button>
-  );
-};
+}) => (
+  <button
+    className={clsx("font-bold text-white bg-blue-400 rounded-md p-2 mx-2", {
+      "bg-blue-900": active,
+    })}
+    onClick={clickHandler}
+  >
+    {children}
+  </button>
+);
 
 export default Button;

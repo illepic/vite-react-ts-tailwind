@@ -3,6 +3,7 @@ import clsx from "clsx";
 
 import { fetchBreeds, fetchCategories } from "./api";
 
+import Header from "./Header";
 import Button from "./Button";
 
 type Tab = "appointments" | "crews";
@@ -25,8 +26,8 @@ function App() {
   }, []);
 
   return (
-    <div className="app container mx-auto">
-      <div className="app-top flex items-center">
+    <div className="app min-h-full">
+      <Header>
         <div>Type:</div>
 
         <Button
@@ -76,27 +77,26 @@ function App() {
         )}
 
         <Button clickHandler={() => console.log("call api")}>Load</Button>
-      </div>
+      </Header>
 
-      <div>
-        <p>Active branch: {activeBranch}</p>
-        <p>Active phase: {activePhase}</p>
-      </div>
-      <div className="app-bottom">
-        <div>Left</div>
-        <div
-          className={`appointments ${
-            activeTab === "appointments" ? "block" : "hidden"
-          }`}
-        >
-          <p className="text-center">Appointments visible</p>
-        </div>
-        <div
-          className={`appointment ${
-            activeTab === "crews" ? "block" : "hidden"
-          }`}
-        >
-          <p className="text-center">Crews Visible</p>
+      <div className="app-bottom flex p-12">
+        <div className="app-bottom__left w-60">Left</div>
+        <div className="app-bottomo__right">
+          <div
+            className={`appointments ${
+              activeTab === "appointments" ? "block" : "hidden"
+            }`}
+          >
+            <p className="text-center">Appointments visible</p>
+          </div>
+
+          <div
+            className={`appointment ${
+              activeTab === "crews" ? "block" : "hidden"
+            }`}
+          >
+            <p className="text-center">Crews Visible</p>
+          </div>
         </div>
       </div>
     </div>
