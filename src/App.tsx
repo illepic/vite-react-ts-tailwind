@@ -3,6 +3,8 @@ import clsx from "clsx";
 
 import { fetchBreeds, fetchCategories } from "./api";
 
+import Button from "./Button";
+
 type Tab = "appointments" | "crews";
 
 function App() {
@@ -26,24 +28,20 @@ function App() {
     <div className="app container mx-auto">
       <div className="app-top flex items-center">
         <div>Type:</div>
-        <button
-          onClick={() => setActiveTab("appointments")}
-          className={clsx(
-            "font-bold text-white bg-blue-400 rounded-md p-2 mx-2",
-            { "bg-blue-900": activeTab === "appointments" }
-          )}
+
+        <Button
+          clickHandler={() => setActiveTab("appointments")}
+          active={activeTab === "appointments"}
         >
           Appointments
-        </button>
-        <button
-          onClick={() => setActiveTab("crews")}
-          className={clsx(
-            "font-bold text-white bg-blue-400 rounded-md p-2 mx-2",
-            { "bg-blue-900": activeTab === "crews" }
-          )}
+        </Button>
+
+        <Button
+          clickHandler={() => setActiveTab("crews")}
+          active={activeTab === "crews"}
         >
           Crews
-        </button>
+        </Button>
 
         <div className="mx-2">
           <label htmlFor="select-branch">Branch location:</label>
@@ -77,12 +75,7 @@ function App() {
           </div>
         )}
 
-        <button
-          className="font-bold text-white bg-blue-400 rounded-md p-2 mx-2"
-          onClick={() => console.log("call api")}
-        >
-          Load
-        </button>
+        <Button clickHandler={() => console.log("call api")}>Load</Button>
       </div>
 
       <div>
