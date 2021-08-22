@@ -7,17 +7,32 @@ const CAT_API_HEADERS = {
 const BREEDS_URL = [CAT_API_URL, "breeds"].join("/");
 const CATEGORIES_URL = [CAT_API_URL, "categories"].join("/");
 
-interface Breed {
-  name: string;
-}
 interface Category {
   id: number;
   name: string;
 }
+interface ApiBreed {
+  id: string;
+  name: string;
+  image: {
+    height: number;
+    width: number;
+    url: string;
+  };
+}
+// Note the use if Pick<> here to make a new type (Breed) based on a few keys of
+// the existing ApiBreed type
+type Breed = Pick<ApiBreed, "id" | "name">;
 
+// Using this an an example of typing a fetch()
 export const fetchBreeds = async (): Promise<Breed[]> => {
   const response = await fetch(BREEDS_URL, CAT_API_HEADERS);
-  return await response.json();
+  if (!response) throw new Error("Fetch breeds failed!");
+
+  // Note how we "cast" allBreeds here
+  const allBreeds: ApiBreed[] = await response.json();
+  // And now TypeScript is happy that id and name exist on each Breed
+  return allBreeds.map(({ id, name }) => ({ id, name }));
 };
 
 export const fetchCategories = async (): Promise<Category[]> => {
