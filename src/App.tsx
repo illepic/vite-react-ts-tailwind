@@ -26,8 +26,6 @@ function App() {
     const branchesSet = new Set<string>();
     const phasesSet = new Set<string>();
 
-    console.log("useEffect");
-
     appointments.forEach((appointment) => {
       // Determine branch locations
       appointment.branch && branchesSet.add(appointment.branch);
