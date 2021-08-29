@@ -1,69 +1,55 @@
 import React, { useEffect, useState } from "react";
 
-import { fetchBreeds, fetchCategories, fetchCatImages, CatImage } from "./api";
+import { fetchAllAppointments, Appointment } from "./api";
 
 import Header from "./Header";
 import Button from "./Button";
 
-type Tab = "appointments" | "crews";
+// type Tab = "appointments" | "crews";
 
 function App() {
-  const [activeTab, setActiveTab] = useState<Tab>("appointments");
-  const [cats, setCats] = useState<CatImage[]>([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
-  const [breeds, setBreeds] = useState<string[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  // Dropdowns
+  const [branches, setBranches] = useState<string[]>([]);
+  const [phases, setPhases] = useState<string[]>([]);
 
-  const [activeBreed, setActiveBreed] = useState("");
-  const [activeCategory, setActiveCategory] = useState("");
-
-  // const getImages = async () => {
-  //   const images = await fetchCatImages();
-  //   setImages(images);
-  // };
+  // Selected within dropdown
+  const [activeBranch, setActiveBranch] = useState("");
+  const [activePhase, setActivePhase] = useState("");
 
   useEffect(() => {
-    // fetchBreeds().then((breeds) =>
-    //   setBranches(breeds.map((breed) => breed.name))
-    // );
-    // fetchCategories().then((categories) =>
-    //   setPhases(categories.map((category) => category.name))
-    // );
-    fetchCatImages().then((cats) => setCats(cats));
+    fetchAllAppointments().then((appointment) => setAppointments(appointment));
   }, []);
 
   useEffect(() => {
-    const breeds = cats.map((cat) => cat.breed);
-    console.log(breeds);
-  }, [cats]);
+    const branchesSet = new Set<string>();
+    const phasesSet = new Set<string>();
+
+    console.log("useEffect");
+
+    appointments.forEach((appointment) => {
+      // Determine branch locations
+      appointment.branch && branchesSet.add(appointment.branch);
+      // Determine phases
+      appointment.phase && phasesSet.add(appointment.phase);
+    });
+
+    setBranches([...branchesSet]);
+    setPhases([...phasesSet]);
+  }, [appointments]);
 
   return (
     <div className="app min-h-full">
       <Header>
-        <div>Type:</div>
-
-        <Button
-          clickHandler={() => setActiveTab("appointments")}
-          active={activeTab === "appointments"}
-        >
-          Appointments
-        </Button>
-
-        <Button
-          clickHandler={() => setActiveTab("crews")}
-          active={activeTab === "crews"}
-        >
-          Crews
-        </Button>
-
         <div className="mx-2">
           <label htmlFor="select-branch">Branch location:</label>
           <select
             id="select-branch"
             className="block"
-            onChange={(e) => setActiveBreed(e.target.value)}
+            onChange={(e) => setActiveBranch(e.target.value)}
           >
-            {breeds.map((branch) => (
+            {branches.map((branch) => (
               <option value={branch} key={branch}>
                 {branch}
               </option>
@@ -71,51 +57,33 @@ function App() {
           </select>
         </div>
 
-        {activeTab === "appointments" && (
-          <div className="mx-2">
-            <label htmlFor="select-crew">Job phase:</label>
-            <select
-              id="select-crew"
-              className="block"
-              onChange={(e) => setActiveCategory(e.target.value)}
-            >
-              {categories.map((phase) => (
-                <option value={phase} key={phase}>
-                  {phase}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+        <div className="mx-2">
+          <label htmlFor="select-crew">Job phase:</label>
+          <select
+            id="select-crew"
+            className="block"
+            onChange={(e) => setActivePhase(e.target.value)}
+          >
+            {phases.map((phase) => (
+              <option value={phase} key={phase}>
+                {phase}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        {/* <Button clickHandler={getImages}>Load</Button> */}
+        <Button>Reload</Button>
       </Header>
 
       <div className="app-bottom flex p-12">
         <div className="app-bottom__left w-60">
-          {cats.map((cat) => (
-            <div key={cat.id}>
-              <img src={cat.url} />
+          {appointments.map((appointment) => (
+            <div key={appointment.id}>
+              <div>{appointment.title}</div>
             </div>
           ))}
         </div>
-        <div className="app-bottom__right">
-          <div
-            className={`appointments ${
-              activeTab === "appointments" ? "block" : "hidden"
-            }`}
-          >
-            <p className="text-center">Appointments visible</p>
-          </div>
-
-          <div
-            className={`appointment ${
-              activeTab === "crews" ? "block" : "hidden"
-            }`}
-          >
-            <p className="text-center">Crews Visible</p>
-          </div>
-        </div>
+        <div className="app-bottom__right">Columns here.</div>
       </div>
     </div>
   );
