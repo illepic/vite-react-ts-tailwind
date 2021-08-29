@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import clsx from "clsx";
 
-import { fetchBreeds, fetchCategories } from "./api";
+import { fetchBreeds, fetchCategories, fetchCatImages, CatImage } from "./api";
 
 import Header from "./Header";
 import Button from "./Button";
@@ -10,20 +9,33 @@ type Tab = "appointments" | "crews";
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>("appointments");
-  const [branches, setBranches] = useState<string[]>([]);
-  const [phases, setPhases] = useState<string[]>([]);
+  const [cats, setCats] = useState<CatImage[]>([]);
 
-  const [activeBranch, setActiveBranch] = useState("");
-  const [activePhase, setActivePhase] = useState("");
+  const [breeds, setBreeds] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  const [activeBreed, setActiveBreed] = useState("");
+  const [activeCategory, setActiveCategory] = useState("");
+
+  // const getImages = async () => {
+  //   const images = await fetchCatImages();
+  //   setImages(images);
+  // };
 
   useEffect(() => {
-    fetchBreeds().then((breeds) =>
-      setBranches(breeds.map((breed) => breed.name))
-    );
-    fetchCategories().then((categories) =>
-      setPhases(categories.map((category) => category.name))
-    );
+    // fetchBreeds().then((breeds) =>
+    //   setBranches(breeds.map((breed) => breed.name))
+    // );
+    // fetchCategories().then((categories) =>
+    //   setPhases(categories.map((category) => category.name))
+    // );
+    fetchCatImages().then((cats) => setCats(cats));
   }, []);
+
+  useEffect(() => {
+    const breeds = cats.map((cat) => cat.breed);
+    console.log(breeds);
+  }, [cats]);
 
   return (
     <div className="app min-h-full">
@@ -49,9 +61,9 @@ function App() {
           <select
             id="select-branch"
             className="block"
-            onChange={(e) => setActiveBranch(e.target.value)}
+            onChange={(e) => setActiveBreed(e.target.value)}
           >
-            {branches.map((branch) => (
+            {breeds.map((branch) => (
               <option value={branch} key={branch}>
                 {branch}
               </option>
@@ -65,9 +77,9 @@ function App() {
             <select
               id="select-crew"
               className="block"
-              onChange={(e) => setActivePhase(e.target.value)}
+              onChange={(e) => setActiveCategory(e.target.value)}
             >
-              {phases.map((phase) => (
+              {categories.map((phase) => (
                 <option value={phase} key={phase}>
                   {phase}
                 </option>
@@ -76,12 +88,18 @@ function App() {
           </div>
         )}
 
-        <Button clickHandler={() => console.log("call api")}>Load</Button>
+        {/* <Button clickHandler={getImages}>Load</Button> */}
       </Header>
 
       <div className="app-bottom flex p-12">
-        <div className="app-bottom__left w-60">Left</div>
-        <div className="app-bottomo__right">
+        <div className="app-bottom__left w-60">
+          {cats.map((cat) => (
+            <div key={cat.id}>
+              <img src={cat.url} />
+            </div>
+          ))}
+        </div>
+        <div className="app-bottom__right">
           <div
             className={`appointments ${
               activeTab === "appointments" ? "block" : "hidden"
