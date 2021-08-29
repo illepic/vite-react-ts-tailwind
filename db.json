@@ -9,7 +9,7 @@
     {
       "id": 2,
       "title": "Appointment 2",
-      "branch": "branch 2",
+      "branch": "branch 1",
       "phase": "phase 2"
     },
     {
@@ -21,7 +21,7 @@
     {
       "id": 4,
       "title": "Appointment 4",
-      "branch": "branch 4",
+      "branch": "branch 2",
       "phase": "phase 4"
     }
   ],
